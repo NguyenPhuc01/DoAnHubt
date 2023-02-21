@@ -7,20 +7,10 @@ import BDSLocation from "../../Container/BDSLocation";
 import Tool from "../../Container/Tool";
 import Footer from "../../Container/Footer";
 import happy from "../../ultil/Images/happy.png";
-const items = new Array(3).fill(null).map((_, i) => {
-  const id = String(i + 1);
-  return {
-    label: `Tab Title ${id}`,
-    key: id,
-    children: (
-      <div>
-        <p className="text-white">Content of Tab Pane {id}</p>
-        <p className="text-white">Content of Tab Pane {id}</p>
-        <p className="text-white">Content of Tab Pane {id}</p>
-      </div>
-    ),
-  };
-});
+const items = [
+  { label: "Tab 1", key: "item-1", children: "Content 1" }, // remember to pass the key prop
+  { label: "Tab 2", key: "item-2", children: "Content 2" },
+];
 function Home() {
   return (
     <>
