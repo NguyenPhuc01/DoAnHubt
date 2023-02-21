@@ -1,0 +1,98 @@
+export const bds = [
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/03/11/532/810d666f12cf4f05a9a28d83b0b730c6.jpg",
+    title: "Hà Đô Centrosa Garden",
+    description: "Quận 10, TPHCM",
+    prices: " Từ 3 tỷ 55 triệu",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Riviera Point",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 585 triệu",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/03/15/331/b3c7e3083c804e789ec3f8d5ce356e94.jpg",
+    title: "Masteri Thảo Điền",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: " Từ 2 tỷ 475 triệu",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/08/429/bdc8b269914646b5b90bb9450b5585a2.jpg",
+    title: "Feliz En Vista",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: "Từ 3 tỷ 770 triệu",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/01/08/336/dd5e0eb228734e45a0b9b7faa24c6b31.jpg",
+    title: "Lexington Residence",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: "Từ 1 tỷ 25 triệu",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Công ty CP Đầu tư và Xây dựng Xuân Mai",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 808 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/08/592/9f9028a8329241dd9f272792c5a65df8.jpg",
+    title: "Novaland Group",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: " Từ 1 tỷ 25 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Công ty CP Đầu tư và Xây dựng Xuân Mai",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 808 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/08/592/9f9028a8329241dd9f272792c5a65df8.jpg",
+    title: "Novaland Group",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: " Từ 1 tỷ 25 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Công ty CP Đầu tư và Xây dựng Xuân Mai",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 808 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/08/592/9f9028a8329241dd9f272792c5a65df8.jpg",
+    title: "Novaland Group",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: " Từ 1 tỷ 25 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Công ty CP Đầu tư và Xây dựng Xuân Mai",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 808 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/08/592/9f9028a8329241dd9f272792c5a65df8.jpg",
+    title: "Novaland Group",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: " Từ 1 tỷ 25 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Công ty CP Đầu tư và Xây dựng Xuân Mai",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 808 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/08/592/9f9028a8329241dd9f272792c5a65df8.jpg",
+    title: "Novaland Group",
+    description: "Quận 2 (TP. Thủ Đức), TPHCM",
+    prices: " Từ 1 tỷ 25 triệu ",
+  },
+  {
+    img: "https://cloud.mogi.vn/project/thumb-detail/2021/04/12/545/0708b7da84874dd5bb63572099c756e4.jpg",
+    title: "Công ty CP Đầu tư và Xây dựng Xuân Mai",
+    description: "Quận 7, TPHCM",
+    prices: " Từ 2 tỷ 808 triệu ",
+  },
+];

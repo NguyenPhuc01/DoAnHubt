@@ -1,0 +1,63 @@
+@import "~antd/dist/antd.css";
+.ant-modal-footer {
+  display: none;
+}
+.ant-modal-body {
+  padding: 0px;
+}
+
+.ant-modal-content {
+  border-radius: 8px;
+  /* background-color: rgb(255, 236, 235); */
+}
+.ant-list-item {
+  white-space: nowrap;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  display: block;
+  padding: 8px 0px;
+}
+.text-news {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: #3c4146;
+  overflow: hidden;
+  -webkit-line-clamp: 4;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.ant-card-body {
+  padding: 10px !important;
+}
+.title-news {
+  height: 60px;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  color: #3c4146;
+}
+.text {
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+.imageBackground {
+  height: 440px;
+  background: #e5e5e5 url(https://mogi.vn/content/images/home/home-bg-d.jpg)
+    center no-repeat;
+  padding-top: 104px;
+  background-position-x: center;
+}
+.ant-card-meta-title {
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
