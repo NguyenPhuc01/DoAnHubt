@@ -75,9 +75,9 @@ function Home() {
           </Col>
         </Row>
 
-        <Row className="w-full absolute md:top-[15vh]  xl:top-[25vh]">
-          <Col xs={24} md={6}></Col>
-          <Col xs={24} md={12}>
+        <Row className="w-full absolute md:top-[15vh]  xl:top-[22vh]">
+          <Col xs={24} md={6} xl={8}></Col>
+          <Col xs={24} md={12} xl={8}>
             <div className=" flex flex-col items-center justify-center text-white h-56">
               <h1 className="text-3xl font-bold text-white">
                 An tâm chọn, An tâm mua
@@ -87,7 +87,7 @@ function Home() {
               </div>
             </div>
           </Col>
-          <Col xs={24} md={6}></Col>
+          <Col xs={24} md={6} xl={8}></Col>
         </Row>
         <div className="max-w-[1140px] mx-auto px-4">
           <News />
