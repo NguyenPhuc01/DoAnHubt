@@ -5,7 +5,18 @@
 .ant-modal-body {
   padding: 0px;
 }
-
+.ant-tabs-nav-list .ant-tabs-tab {
+  margin-left: 20px !important;
+  background: none !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+.ant-tabs-nav-wrap {
+  display: flex;
+  justify-content: center;
+}
 .ant-modal-content {
   border-radius: 8px;
   /* background-color: rgb(255, 236, 235); */
