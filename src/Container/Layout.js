@@ -45,7 +45,7 @@ export default function LayoutPage({ children }) {
             className=" overflow-auto"
             width={280}
             style={{
-              minHeight: "90vh",
+              height: "96vh ",
             }}
           >
             <div className="logo flex p-4 items-center">
