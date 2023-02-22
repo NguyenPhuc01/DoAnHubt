@@ -46,7 +46,6 @@ const menu = (
 );
 function Header(props) {
   const loginResult = useSelector((state) => state.login.loginResult);
-  console.log("🚀 ~ file: Header.js:49 ~ Header ~ loginResult:", loginResult);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
   const [open, setOpen] = useState(false);
@@ -124,12 +123,14 @@ function Header(props) {
                 </>
               )}
 
-              <Button
-                className="ml-3 "
-                style={{ fontWeight: "600", borderRadius: "8px" }}
-              >
-                Đăng tin{" "}
-              </Button>
+              <Link to={"/dang-tin"}>
+                <Button
+                  className="ml-3 "
+                  style={{ fontWeight: "600", borderRadius: "8px" }}
+                >
+                  Đăng tin{" "}
+                </Button>
+              </Link>
             </div>
 
             {/* Mobile show */}
