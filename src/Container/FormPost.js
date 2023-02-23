@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button, Divider, Form, Input, InputNumber, Radio, Select } from "antd";
 import axios from "axios";
@@ -7,8 +7,10 @@ const { Option } = Select;
 export default function FormPost() {
   const [active, setActive] = useState(false);
   const [options, setOptions] = useState([]);
-  const [selectedOptionsLocation, setSelectOptionsLocation] = useState("");
   const [form] = Form.useForm();
+  const [getAllCity, setGetAllCity] = useState([]);
+  const [getDistrict, setGetDistrict] = useState([]);
+  const [getWards, setGetWards] = useState([]);
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -38,13 +40,8 @@ export default function FormPost() {
         });
     }
   };
-  const onChange = (value, selectedOptions) => {
-    console.log(value, selectedOptions);
-    setSelectOptionsLocation(value);
-  };
-  const test = (selectedOptionsLocation) => {
-    let result = selectedOptionsLocation.split(",");
-    console.log("🚀 ~ file: FormPost.js:47 ~ test ~ result:", result);
+  const onChange = (value) => {
+    let result = value.split(",");
     form.setFieldsValue({
       city: result[2],
       District: result[1],
@@ -52,7 +49,42 @@ export default function FormPost() {
     });
   };
 
-  test(selectedOptionsLocation);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_URL}/api/v1/provinces`)
+      .then((res) => {
+        setGetAllCity(res.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const onChangeCity = (value, option) => {
+    axios
+      .get(
+        `${process.env.REACT_APP_URL}/api/v1/provinces/get-districts-by-provice-id/${option.key}`
+      )
+      .then((res) => {
+        setGetDistrict(res.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const onChangeDistrict = (value, option) => {
+    axios
+      .get(
+        `${process.env.REACT_APP_URL}/api/v1/provinces/get-wards-by-districts-id/${option.key}`
+      )
+      .then((res) => {
+        setGetWards(res.data.result);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const filter = (inputValue, path) => {
     path.some(
       (option) =>
@@ -160,10 +192,14 @@ export default function FormPost() {
               },
             ]}
           >
-            <Select placeholder="Chọn" allowClear>
-              <Option value="male">male</Option>
-              <Option value="female">female</Option>
-              <Option value="other">other</Option>
+            <Select placeholder="Chọn" allowClear onChange={onChangeCity}>
+              {getAllCity.map((e, i) => {
+                return (
+                  <Option key={e.code} value={e.fullName}>
+                    {e.fullName}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
 
@@ -179,10 +215,14 @@ export default function FormPost() {
               },
             ]}
           >
-            <Select placeholder="Chọn" allowClear>
-              <Option value="male">male</Option>
-              <Option value="female">female</Option>
-              <Option value="other">other</Option>
+            <Select placeholder="Chọn" allowClear onChange={onChangeDistrict}>
+              {getDistrict.map((e) => {
+                return (
+                  <Option key={e.code} value={e.fullName}>
+                    {e.fullName}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
         </div>
@@ -201,9 +241,13 @@ export default function FormPost() {
             ]}
           >
             <Select placeholder="Chọn" allowClear>
-              <Option value="male">male</Option>
-              <Option value="female">female</Option>
-              <Option value="other">other</Option>
+              {getWards.map((e) => {
+                return (
+                  <Option key={e.code} value={e.fullName}>
+                    {e.fullName}
+                  </Option>
+                );
+              })}
             </Select>
           </Form.Item>
 

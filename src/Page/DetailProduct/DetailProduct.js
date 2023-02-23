@@ -82,7 +82,6 @@ function DetailProduct() {
     let str = date.toLocaleDateString();
     return str;
   };
-  console.log(process.env.REACT_APP_API_KEY);
   return (
     <>
       <div className="lg:max-w-[1070px] mx-auto mt-24 px-4 xl:px-0">
