@@ -256,18 +256,8 @@ export default function FormPost() {
             style={{ paddingLeft: 8 }}
             label="Đường, phố"
             name="Street"
-            rules={[
-              {
-                required: true,
-                message: "Cần nhập thông tin này!",
-              },
-            ]}
           >
-            <Select placeholder="Chọn" allowClear>
-              <Option value="male">male</Option>
-              <Option value="female">female</Option>
-              <Option value="other">other</Option>
-            </Select>
+            <Input placeholder="Nhập tên đường, phố " />
           </Form.Item>
         </div>
         <Form.Item label="Dự án" name="project">
