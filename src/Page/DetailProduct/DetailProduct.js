@@ -4,11 +4,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useParams } from "react-router-dom";
 import "swiper/css";
 import axios from "axios";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import Footer from "../../Container/Footer";
 import GoogleMapReact from "google-map-react";
 import { MdLocationOn } from "react-icons/md";
-import { geocodeByAddress } from "react-google-places-autocomplete";
 import ProjectFloatingCarosel from "../../Container/ProjectFloatingCarosel";
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 function DetailProduct() {

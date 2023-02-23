@@ -5,7 +5,7 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Layout, Menu } from "antd";
+import { Collapse, Layout, Menu } from "antd";
 import React, { useState } from "react";
 import Footer from "./Footer";
 const { Header, Sider, Content } = Layout;
@@ -31,12 +31,8 @@ export default function LayoutPage({ children }) {
   ];
   return (
     <div className="h-full ">
-      <Layout
-        style={{
-          minHeight: "90vh",
-        }}
-      >
-        <div className="hidden lg:block ">
+      <Layout>
+        <div className="hidden xl:block ">
           <Sider
             trigger={null}
             collapsible
@@ -45,13 +41,35 @@ export default function LayoutPage({ children }) {
             className=" overflow-auto"
             width={280}
             style={{
-              height: "96vh ",
+              overflow: "auto",
+              height: "100vh",
+              position: "fixed",
+              left: 0,
+              top: 60,
+              bottom: 0,
             }}
           >
-            <div className="logo flex p-4 items-center">
-              <div className="bg-[#FFECEB] h-14 w-14 rounded-full flex justify-center items-center text-2xl font-semibold uppercase text-[#74150F]">
-                p
-              </div>
+            <button
+              className="flex w-full mt-3 "
+              style={{
+                justifyContent: collapsed ? "center" : "end",
+                padding: 10,
+              }}
+              onClick={() => setCollapsed(!collapsed)}
+            >
+              {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            </button>
+            <div className="logo flex px-4 pb-4 pt-2 items-center">
+              {collapsed ? (
+                <div className="bg-[#FFECEB] h-12 w-12 rounded-full flex justify-center items-center text-2xl font-semibold uppercase text-[#74150F]">
+                  p
+                </div>
+              ) : (
+                <div className="bg-[#FFECEB] h-14 w-14 rounded-full flex justify-center items-center text-2xl font-semibold uppercase text-[#74150F]">
+                  p
+                </div>
+              )}
+
               <div
                 className="pl-3 "
                 style={{ display: collapsed ? "none" : "" }}
@@ -64,21 +82,6 @@ export default function LayoutPage({ children }) {
           </Sider>
         </div>
         <Layout className="site-layout">
-          <Header
-            className="site-layout-background"
-            style={{
-              padding: 0,
-            }}
-          >
-            {React.createElement(
-              collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: "trigger",
-                onClick: () => setCollapsed(!collapsed),
-                style: { marginLeft: 20 },
-              }
-            )}
-          </Header>
           <Content
             className="bg-[#F9F9F9] lg:p-6"
             style={{

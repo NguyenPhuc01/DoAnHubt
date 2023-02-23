@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { GetProduct } from "../Store/Actions/ProductAction";
 import { Link } from "react-router-dom";
-import "react-lazy-load-image-component/src/effects/blur.css";
 function BDS(props) {
   const dispatch = useDispatch();
   useEffect(() => {

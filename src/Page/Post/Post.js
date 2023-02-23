@@ -8,19 +8,18 @@ export default function Post() {
   return (
     <div className="mt-16 ">
       <LayoutPage>
-        <div className="overflow-y-auto">
+        <div className="">
           <Row>
-            <Col xs={24} xl={4}></Col>
+            <Col xs={24} xl={5}></Col>
             <Col xs={24} xl={16} className="  md:p-6">
-              <div className="">
+              <div className="">  
                 <FormPost />
               </div>
             </Col>
-            <Col xs={24} xl={4}></Col>
+            <Col xs={24} xl={3}></Col>
           </Row>
         </div>
       </LayoutPage>
-      <Footer />
     </div>
   );
 }

@@ -3,7 +3,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Card } from "antd";
 import axios from "axios";
-import "react-lazy-load-image-component/src/effects/blur.css";
 const { Meta } = Card;
 
 function ProjectFloatingCarosel({ title }) {

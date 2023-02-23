@@ -91,9 +91,7 @@ export default function FormPost() {
         option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
   };
-  const dropdownRender = (menus) => (
-    <div className="w-[80vw] md:w-[680px]">{menus}</div>
-  );
+  const dropdownRender = (menus) => <div>{menus}</div>;
   return (
     <div className="bg-[#fff] shadow-lg rounded-md p-6">
       <h1 className="text-2xl font-semibold">Thông tin cơ bản</h1>
