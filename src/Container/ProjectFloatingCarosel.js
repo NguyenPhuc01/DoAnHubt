@@ -28,7 +28,6 @@ function ProjectFloatingCarosel({ title }) {
         spaceBetween={12}
         slidesPerView={2}
         style={{ padding: "12px 0px" }}
-
         breakpoints={{
           460: {
             slidesPerView: 2,
@@ -61,8 +60,8 @@ function ProjectFloatingCarosel({ title }) {
                     alt=""
                     className="h-36 md:h-44"
                     style={{ borderRadius: "8px 8px 0px 0px" }}
+                    loading="lazy"
                   />
-          
                 }
               >
                 <Meta title={e.name} />

@@ -1,17 +1,22 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { Row, Col, Form, Input, Checkbox, Button, Spin } from "antd";
 import styles from "./Login.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { LoginAction } from "../../Store/Actions/LoginAction";
+import { useNavigate } from "react-router-dom";
 const Login: FC = () => {
   const isLoading: any = useSelector((state: any) => state.login.loading);
-  console.log("🚀 ~ file: Login.tsx:8 ~ loading", isLoading);
+  const loginResult = useSelector((state: any) => state.login.loginResult);
+  const navigate = useNavigate();
   const dispatch: any = useDispatch();
   const onFinish = (values: any) => {
-    console.log("Success:", values);
     dispatch(LoginAction(values));
   };
-
+  useEffect(() => {
+    if (loginResult) {
+      navigate("/");
+    }
+  }, [loginResult, navigate]);
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };

@@ -36,7 +36,7 @@ function BDS(props) {
                           borderRadius: "8px 8px 0px 0px",
                           width: "100%",
                         }}
-                        loading="eager"
+                        loading="lazy"
                         className="object-cover h-40 md:h-48"
                       />
                     }
