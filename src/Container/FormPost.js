@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 
-import { Button, Form, Input, Select } from "antd";
-const { Search } = Input;
+import { Button, Divider, Form, Input, InputNumber, Radio, Select } from "antd";
+import axios from "axios";
 const { Option } = Select;
+
 export default function FormPost() {
   const [active, setActive] = useState(false);
-
+  const [options, setOptions] = useState([]);
+  const [selectedOptionsLocation, setSelectOptionsLocation] = useState("");
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log("Success:", values);
@@ -16,11 +18,54 @@ export default function FormPost() {
   const onGenderChange = (value) => {
     console.log("🚀 ~ file: Post.js:16 ~ onGenderChange ~ value:", value);
   };
-  const onSearch = (value) => console.log("value search", value);
+  const generateOptions = (locationData) => {
+    const options = locationData.map((e) => {
+      return { value: e.Label, label: e.Label };
+    });
+    setOptions(options);
+  };
+  const onSearch = (value) => {
+    if (value) {
+      axios
+        .get(
+          `https://locationsuggestion.batdongsan.com.vn/api/Search/Index?text=${value}&userId=2134846`
+        )
+        .then((res) => {
+          generateOptions(res.data.Result.LocationResults);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+  const onChange = (value, selectedOptions) => {
+    console.log(value, selectedOptions);
+    setSelectOptionsLocation(value);
+  };
+  const test = (selectedOptionsLocation) => {
+    let result = selectedOptionsLocation.split(",");
+    console.log("🚀 ~ file: FormPost.js:47 ~ test ~ result:", result);
+    form.setFieldsValue({
+      city: result[2],
+      District: result[1],
+      Wards: result[0],
+    });
+  };
+
+  test(selectedOptionsLocation);
+  const filter = (inputValue, path) => {
+    path.some(
+      (option) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
+  };
+  const dropdownRender = (menus) => (
+    <div className="w-[80vw] md:w-[680px]">{menus}</div>
+  );
   return (
-    <div className="">
+    <div className="bg-[#fff] shadow-lg rounded-md p-6">
       <h1 className="text-2xl font-semibold">Thông tin cơ bản</h1>
-      <div className="flex">
+      <div className="flex my-5">
         <Button
           className="w-full"
           type={active === false ? "primary" : ""}
@@ -36,20 +81,78 @@ export default function FormPost() {
           Cho Thuê
         </Button>
       </div>
-      <div className="mt-5">
-        <Form
-          form={form}
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-          autoComplete="off"
-          layout="vertical"
+      <Form
+        form={form}
+        initialValues={{
+          remember: true,
+        }}
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
+        autoComplete="off"
+        layout="vertical"
+      >
+        <Form.Item
+          label="Loại bất động sản"
+          name="typeOfRealEstate"
+          rules={[
+            {
+              required: true,
+              message: "Cần nhập thông tin này!",
+            },
+          ]}
         >
+          <Select
+            placeholder="VD: Nhà riêng"
+            onChange={onGenderChange}
+            allowClear
+          >
+            <Option value="Cho thuê căn hộ chung cư">
+              Cho thuê căn hộ chung cư
+            </Option>
+            <Option value="Cho thuê nhà riêng">Cho thuê nhà riêng</Option>
+            <Option value="Cho thuê nhà biệt thự, liền kề">
+              Cho thuê nhà biệt thự, liền kề
+            </Option>
+            <Option value="Cho thuê nhà mặt phố">Cho thuê nhà mặt phố</Option>
+            <Option value="Cho thuê shophouse, nhà phố thương mại">
+              Cho thuê shophouse, nhà phố thương mại
+            </Option>
+            <Option value="Cho thuê nhà trọ, phòng trọ">
+              Cho thuê nhà trọ, phòng trọ
+            </Option>
+            <Option value="Cho thuê văn phòng">Cho thuê văn phòng</Option>
+            <Option value="Cho thuê, sang nhượng cửa hàng, ki ốt">
+              Cho thuê, sang nhượng cửa hàng, ki ốt
+            </Option>
+            <Option value="Cho thuê kho, nhà xưởng, đất">
+              Cho thuê kho, nhà xưởng, đất
+            </Option>
+            <Option value="Cho thuê loại bất động sản khác">
+              Cho thuê loại bất động sản khác
+            </Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="Chọn nhanh địa chỉ" name="location">
+          <Select
+            dropdownRender={dropdownRender}
+            options={options}
+            onChange={onChange}
+            placeholder="Please select"
+            allowClear
+            showSearch={{
+              filter,
+              matchInputWidth: true,
+            }}
+            onSearch={onSearch}
+          />
+        </Form.Item>
+
+        <div className="flex ">
           <Form.Item
-            label="Loại bất động sản"
-            name="typeOfRealEstate"
+            className="w-full "
+            label="Tỉnh, Thành phố"
+            name="city"
+            style={{ paddingRight: 8, marginBottom: 5 }}
             rules={[
               {
                 required: true,
@@ -57,106 +160,6 @@ export default function FormPost() {
               },
             ]}
           >
-            <Select
-              placeholder="VD: Nhà riêng"
-              onChange={onGenderChange}
-              allowClear
-            >
-              <Option value="male">male</Option>
-              <Option value="female">female</Option>
-              <Option value="other">other</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="Loại bất động sản" name="location">
-            <Search
-              placeholder="Ví dụ: Vinhomes Golden Bason"
-              allowClear
-              enterButton="Tìm kiếm"
-              size="large"
-              onSearch={onSearch}
-            />
-          </Form.Item>
-
-          <div className="flex ">
-            <Form.Item
-              className="w-full "
-              label="Tỉnh, Thành phố"
-              name="city"
-              style={{ paddingRight: 8, marginBottom: 5 }}
-              rules={[
-                {
-                  required: true,
-                  message: "Cần nhập thông tin này!",
-                },
-              ]}
-            >
-              <Select placeholder="Chọn" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              className="w-full "
-              style={{ paddingLeft: 8, marginBottom: 5 }}
-              label="Quận, Huyện"
-              name="District"
-              rules={[
-                {
-                  required: true,
-                  message: "Cần nhập thông tin này!",
-                },
-              ]}
-            >
-              <Select placeholder="Chọn" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-          </div>
-
-          <div className="flex ">
-            <Form.Item
-              className="w-full "
-              label="Phường, xã"
-              name="Wards"
-              style={{ paddingRight: 8 }}
-              rules={[
-                {
-                  required: true,
-                  message: "Cần nhập thông tin này!",
-                },
-              ]}
-            >
-              <Select placeholder="Chọn" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item
-              className="w-full "
-              style={{ paddingLeft: 8 }}
-              label="Đường, phố"
-              name="Street"
-              rules={[
-                {
-                  required: true,
-                  message: "Cần nhập thông tin này!",
-                },
-              ]}
-            >
-              <Select placeholder="Chọn" allowClear>
-                <Option value="male">male</Option>
-                <Option value="female">female</Option>
-                <Option value="other">other</Option>
-              </Select>
-            </Form.Item>
-          </div>
-          <Form.Item label="Dự án" name="project">
             <Select placeholder="Chọn" allowClear>
               <Option value="male">male</Option>
               <Option value="female">female</Option>
@@ -164,20 +167,293 @@ export default function FormPost() {
             </Select>
           </Form.Item>
 
-          <Form.Item label="Địa chỉ hiển thị trên tin đăng" name="locationShow">
-            <Input placeholder="bạn có thể bổ sung hẻm,ngách,ngõ..." />
+          <Form.Item
+            className="w-full "
+            style={{ paddingLeft: 8, marginBottom: 5 }}
+            label="Quận, Huyện"
+            name="District"
+            rules={[
+              {
+                required: true,
+                message: "Cần nhập thông tin này!",
+              },
+            ]}
+          >
+            <Select placeholder="Chọn" allowClear>
+              <Option value="male">male</Option>
+              <Option value="female">female</Option>
+              <Option value="other">other</Option>
+            </Select>
+          </Form.Item>
+        </div>
+
+        <div className="flex ">
+          <Form.Item
+            className="w-full "
+            label="Phường, xã"
+            name="Wards"
+            style={{ paddingRight: 8 }}
+            rules={[
+              {
+                required: true,
+                message: "Cần nhập thông tin này!",
+              },
+            ]}
+          >
+            <Select placeholder="Chọn" allowClear>
+              <Option value="male">male</Option>
+              <Option value="female">female</Option>
+              <Option value="other">other</Option>
+            </Select>
           </Form.Item>
 
-          <Form.Item>
-            <div className="flex justify-between ">
-              <Button>Xem trước</Button>
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </div>
+          <Form.Item
+            className="w-full "
+            style={{ paddingLeft: 8 }}
+            label="Đường, phố"
+            name="Street"
+            rules={[
+              {
+                required: true,
+                message: "Cần nhập thông tin này!",
+              },
+            ]}
+          >
+            <Select placeholder="Chọn" allowClear>
+              <Option value="male">male</Option>
+              <Option value="female">female</Option>
+              <Option value="other">other</Option>
+            </Select>
           </Form.Item>
-        </Form>
-      </div>
+        </div>
+        <Form.Item label="Dự án" name="project">
+          <Select placeholder="Chọn" allowClear>
+            <Option value="male">male</Option>
+            <Option value="female">female</Option>
+            <Option value="other">other</Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item label="Địa chỉ hiển thị trên tin đăng" name="locationShow">
+          <Input placeholder="bạn có thể bổ sung hẻm,ngách,ngõ..." allowClear />
+        </Form.Item>
+
+        <div className="mt-10">
+          <h1 className="text-2xl font-semibold">Thông tin bài viết</h1>
+
+          <Form.Item
+            label="Tiêu đề"
+            name="title"
+            rules={[
+              {
+                required: true,
+                message: "Cần nhập thông tin này!",
+              },
+            ]}
+          >
+            <Input.TextArea
+              showCount={true}
+              placeholder="VD: Bán nhà riêng 50m2 tại cầu giấy"
+              maxLength={99}
+              allowClear
+            />
+          </Form.Item>
+          <Form.Item
+            label="Mô tả"
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "Cần nhập thông tin này!",
+              },
+            ]}
+          >
+            <Input.TextArea
+              rows={8}
+              maxLength={3000}
+              showCount={true}
+              allowClear
+              placeholder="Nhập mô tả chung về bất động sản của bạn. Ví dụ: Khu nhà có vị trí thuận lợi, gần công viên, gần trường học ...  "
+            />
+          </Form.Item>
+        </div>
+
+        <div className="mt-10">
+          <h1 className="text-2xl font-semibold">Thông tin bất động sản</h1>
+          <Form.Item
+            label="Diện tích"
+            name="acreage"
+            rules={[
+              {
+                required: true,
+                message: "Cần nhập thông tin này!",
+              },
+            ]}
+          >
+            <Input
+              placeholder="Nhập diện tích , VD: 80"
+              type="Number"
+              value={Number}
+              suffix="m2"
+              allowClear
+            />
+          </Form.Item>
+
+          <div>
+            <Form.Item
+              label="Mức giá"
+              name="price"
+              rules={[
+                {
+                  required: true,
+                  message: "Cần nhập thông tin này!",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Nhập giá , VD: 8000000"
+                type="Number"
+                value={Number}
+                suffix="VND"
+                allowClear
+              />
+            </Form.Item>
+            <Form.Item label="Giấy tờ pháp lý" name="legal">
+              <Radio.Group defaultValue="null" buttonStyle="solid">
+                <Radio.Button
+                  value="Sổ đỏ/ Sổ hồng"
+                  style={{ borderRadius: 20, marginLeft: 10 }}
+                >
+                  Sổ đỏ/ Sổ hồng
+                </Radio.Button>
+                <Radio.Button
+                  value="Hợp đồng mua bán"
+                  style={{ borderRadius: 20, marginLeft: 10 }}
+                >
+                  Hợp đồng mua bán
+                </Radio.Button>
+                <Radio.Button
+                  value="Đang chờ sổ"
+                  style={{ borderRadius: 20, marginLeft: 10 }}
+                >
+                  Đang chờ sổ
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+
+            <Form.Item label="Nội thất" name="interior">
+              <Radio.Group defaultValue="null" buttonStyle="solid">
+                <Radio.Button
+                  value=" Đầy đủ"
+                  style={{ borderRadius: 20, marginLeft: 10 }}
+                >
+                  Đầy đủ
+                </Radio.Button>
+                <Radio.Button
+                  value="Cơ bản"
+                  style={{ borderRadius: 20, marginLeft: 10 }}
+                >
+                  Cơ bản
+                </Radio.Button>
+                <Radio.Button
+                  value="Không nội thất"
+                  style={{ borderRadius: 20, marginLeft: 10 }}
+                >
+                  Không nội thất
+                </Radio.Button>
+              </Radio.Group>
+            </Form.Item>
+            <Divider />
+            <div className="mb-5">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-base font-semibold">Số phòng ngủ</span>
+                <Form.Item name="bedroom" style={{ margin: 0 }}>
+                  <InputNumber
+                    min={0}
+                    defaultValue={0}
+                    style={{ borderRadius: 4 }}
+                  />
+                </Form.Item>
+              </div>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-base font-semibold">
+                  Số phòng tắm, vệ sinh
+                </span>
+                <Form.Item name="toilet" style={{ margin: 0 }}>
+                  <InputNumber
+                    min={0}
+                    defaultValue={0}
+                    style={{ borderRadius: 4 }}
+                  />
+                </Form.Item>
+              </div>
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-base font-semibold">Số tầng</span>
+                <Form.Item name="floors" style={{ margin: 0 }}>
+                  <InputNumber
+                    min={0}
+                    defaultValue={0}
+                    style={{ borderRadius: 4 }}
+                  />
+                </Form.Item>
+              </div>
+            </div>
+            <Divider
+              orientation="left"
+              plain
+              style={{ color: "gray", fontSize: 12 }}
+            >
+              Mô tả bổ sung
+            </Divider>
+          </div>
+          <Form.Item label="Hướng nhà" name="DirectionHouse">
+            <Select placeholder="Chọn" allowClear>
+              <Option value="Đông">Đông</Option>
+              <Option value="Tây">Tây</Option>
+              <Option value="Nam">Nam</Option>
+              <Option value="Bắc">Bắc</Option>
+              <Option value="Đông Bắc">Đông Bắc</Option>
+              <Option value="Tấy Bắc">Tấy Bắc</Option>
+              <Option value="Đông Nam">Đông Nam</Option>
+              <Option value="Tây Nam">Tây Nam</Option>
+            </Select>
+          </Form.Item>
+
+          <Form.Item label="Hướng ban công" name="BalconyDirection">
+            <Select placeholder="Chọn" allowClear>
+              <Option value="Đông">Đông</Option>
+              <Option value="Tây">Tây</Option>
+              <Option value="Nam">Nam</Option>
+              <Option value="Bắc">Bắc</Option>
+              <Option value="Đông Bắc">Đông Bắc</Option>
+              <Option value="Tấy Bắc">Tấy Bắc</Option>
+              <Option value="Đông Nam">Đông Nam</Option>
+              <Option value="Tây Nam">Tây Nam</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Đường vào" name="way">
+            <Input placeholder="Nhập số" type="number" suffix="m" allowClear />
+          </Form.Item>
+          <Form.Item label="Mặt tiền" name="Facade">
+            <Input placeholder="Nhập số" type="number" suffix="m" allowClear />
+          </Form.Item>
+        </div>
+        <Form.Item>
+          <div className="flex justify-between ">
+            <Button style={{ borderRadius: 8 }} size="large">
+              Xem trước
+            </Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              size="large"
+              style={{ borderRadius: 8 }}
+            >
+              Submit
+            </Button>
+          </div>
+        </Form.Item>
+      </Form>
     </div>
   );
 }

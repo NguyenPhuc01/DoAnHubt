@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Col, Drawer, Dropdown, Menu, Row, Space } from "antd";
+import { Button, Col, Drawer, Dropdown, Menu, Row, Space, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -8,42 +8,105 @@ import ModalRegister from "./ModalRegister";
 import logo from "../ultil/Images/logo.jpg";
 import { MdMenu } from "react-icons/md";
 import home from "../ultil/Images/icons8-home-64.png";
+import {
+  MdFormatListBulleted,
+  MdOutlinePersonOutline,
+  MdLockOutline,
+  MdLogout,
+} from "react-icons/md";
+import { RiAdvertisementLine } from "react-icons/ri";
+import { TfiWallet } from "react-icons/tfi";
 const menu = (
   <Menu
-    style={{ width: "200px" }}
+    style={{ width: "240px", borderRadius: "8px" }}
     items={[
       {
         key: "1",
-        label: <p>Quản lý đăng tin</p>,
+        label: (
+          <p
+            style={{ marginBottom: 0, padding: "4px 0" }}
+            className="flex items-center "
+          >
+            <MdFormatListBulleted size={20} className=" mr-2" />
+            Quản lý đăng tin
+          </p>
+        ),
       },
       {
         key: "2",
-        label: <p>Quản lý đăng tin</p>,
+        label: (
+          <p
+            style={{ marginBottom: 0, padding: "4px 0" }}
+            className="flex items-center"
+          >
+            <RiAdvertisementLine size={20} className=" mr-2" />
+            Quản lý tin tài trợ
+          </p>
+        ),
       },
       {
         key: "3",
-        label: <p>Quản lý đăng tin</p>,
+        label: (
+          <p
+            style={{ marginBottom: 0, padding: "4px 0" }}
+            className="flex items-center"
+          >
+            <MdOutlinePersonOutline size={20} className=" mr-2" />
+            Thay đổi thông tin cá nhân
+          </p>
+        ),
       },
       {
         key: "4",
-        label: <p>Quản lý đăng tin</p>,
+        label: (
+          <p
+            style={{ marginBottom: 0, padding: "4px 0" }}
+            className="flex items-center"
+          >
+            <MdLockOutline size={20} className=" mr-2" />
+            Thay đổi mật khẩu
+          </p>
+        ),
       },
       {
         key: "5",
         label: (
           <p
-            onClick={() => {
-              localStorage.clear();
-              window.location.reload();
-            }}
+            style={{ marginBottom: 0, padding: "4px 0" }}
+            className="flex items-center"
           >
+            <TfiWallet size={20} className=" mr-2" />
+            Nạp tiền
+          </p>
+        ),
+      },
+      {
+        label: <Divider style={{ margin: 0, padding: 0 }} />,
+      },
+      {
+        key: "logout",
+        label: (
+          <p
+            style={{ marginBottom: 0, padding: "4px 0" }}
+            className="flex items-center"
+          >
+            <MdLogout size={20} className=" mr-2" />
             Đăng xuất
           </p>
         ),
       },
     ]}
+    onClick={(e) => {
+      if (e.key === "logout") {
+        localStorage.clear();
+        window.location.reload();
+      }
+    }}
   />
 );
+// onClick={() => {
+//
+// }}
 function Header(props) {
   const loginResult = useSelector((state) => state.login.loginResult);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,8 +162,15 @@ function Header(props) {
               </Button>
               {loginResult ? (
                 <Dropdown overlay={menu} className="mx-4">
-                  <Space className="cursor-pointer text-xl ">
-                    {`${Uppercase(loginResult)} `}
+                  <Space className="cursor-pointer text-lg ">
+                    <div className="logo flex items-center">
+                      <div className="bg-[#FFECEB] h-9 w-9 rounded-full flex justify-center items-center text-lg font-semibold uppercase text-[#74150F]">
+                        {loginResult.slice(0, 1)}
+                      </div>
+                      <div className="pl-2 ">
+                        <h4 className="m-0">{`${Uppercase(loginResult)} `}</h4>
+                      </div>
+                    </div>
                     <DownOutlined className="text-sm mb-2" />
                   </Space>
                 </Dropdown>
