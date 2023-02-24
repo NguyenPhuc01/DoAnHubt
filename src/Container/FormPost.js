@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-
+import { InboxOutlined } from "@ant-design/icons";
 import { Button, Divider, Form, Input, InputNumber, Radio, Select } from "antd";
 import axios from "axios";
+import Dragger from "antd/lib/upload/Dragger";
 const { Option } = Select;
 
 export default function FormPost() {
@@ -11,8 +12,43 @@ export default function FormPost() {
   const [getAllCity, setGetAllCity] = useState([]);
   const [getDistrict, setGetDistrict] = useState([]);
   const [getWards, setGetWards] = useState([]);
+  const [typePost, setTypePost] = useState("RENT");
+
   const onFinish = (values) => {
     console.log("Success:", values);
+    let postData = new FormData();
+    postData.append("name", values.title);
+    postData.append("village", values.Wards);
+    postData.append("province", values.city);
+    postData.append(
+      "addressDetails",
+      `${values.Wards}, ${values.District} ,${values.city}`
+    );
+    postData.append("district", values.District);
+    postData.append("priceUnit", "Tháng");
+    postData.append("price", values.price);
+    postData.append("area", "100");
+    postData.append("bedroom", values.bedroom);
+    postData.append("description", values.description);
+    postData.append("facade", values.Facade);
+    postData.append("direction", values.DirectionHouse);
+    postData.append("juridical", values.legal);
+    postData.append("gateway", values.way);
+    postData.append("numberFloor", values.floors);
+    postData.append("toilet", values.toilet);
+    postData.append("furniture", values.interior);
+    postData.append("image", values.image.file);
+    postData.append("imagesDetails", values.image.fileList);
+    postData.append("typePost", typePost);
+
+    axios
+      .post(`${process.env.REACT_APP_URL}/api/v1/posts`)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -91,6 +127,9 @@ export default function FormPost() {
         option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
   };
+  const onChangeImage = (file) => {
+    console.log("🚀 ~ file: FormPost.js:96 ~ onChangeImage ~ file:", file);
+  };
   const dropdownRender = (menus) => <div>{menus}</div>;
   return (
     <div className="bg-[#fff] shadow-lg rounded-md p-6">
@@ -99,14 +138,20 @@ export default function FormPost() {
         <Button
           className="w-full"
           type={active === false ? "primary" : ""}
-          onClick={() => setActive(false)}
+          onClick={() => {
+            setTypePost("SELL_HOUSE");
+            setActive(false);
+          }}
         >
           Bán
         </Button>
         <Button
           className="w-full"
           type={active === true ? "primary" : ""}
-          onClick={() => setActive(true)}
+          onClick={() => {
+            setActive(true);
+            setTypePost("RENT");
+          }}
         >
           Cho Thuê
         </Button>
@@ -470,6 +515,38 @@ export default function FormPost() {
             <Input placeholder="Nhập số" type="number" suffix="m" allowClear />
           </Form.Item>
         </div>
+
+        <div className="mt-10">
+          <h1 className="text-2xl font-semibold">Hình ảnh</h1>
+          <ul>
+            <li>• Hãy dùng ảnh thật, không trùng, không chèn số điện thoại</li>
+            <li>• Mỗi ảnh kích thước tối thiểu 100x100 px, tối đa 15 MB</li>
+            <li>
+              • Số lượng ảnh tối đa tuỳ theo loại tin chọn ở bước tiếp theo
+            </li>
+          </ul>
+          <div className=" py-5">
+            <Form.Item name="image">
+              <Dragger
+                name="file"
+                accept=".png,.jpg,.jpeg"
+                multiple
+                beforeUpload={() => {
+                  return false;
+                }}
+                listType="picture"
+                // onChange={onChangeImage}
+              >
+                <p className="ant-upload-drag-icon">
+                  <InboxOutlined />
+                </p>
+                <p className="ant-upload-text">Bấm đển chọn ảnh cần tải lên</p>
+                <p className="ant-upload-hint">Hoặc kéo thả ảnh vào đây</p>
+              </Dragger>
+            </Form.Item>
+          </div>
+        </div>
+
         <Form.Item>
           <div className="flex justify-between ">
             <Button style={{ borderRadius: 8 }} size="large">

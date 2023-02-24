@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Drawer, Dropdown, Menu, Row, Space, Divider } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ModalLogin from "./ModalLogin";
 import ModalRegister from "./ModalRegister";
@@ -16,103 +16,103 @@ import {
 } from "react-icons/md";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { TfiWallet } from "react-icons/tfi";
-const menu = (
-  <Menu
-    style={{ width: "240px", borderRadius: "8px" }}
-    items={[
-      {
-        key: "1",
-        label: (
-          <p
-            style={{ marginBottom: 0, padding: "4px 0" }}
-            className="flex items-center "
-          >
-            <MdFormatListBulleted size={20} className=" mr-2" />
-            Quản lý đăng tin
-          </p>
-        ),
-      },
-      {
-        key: "2",
-        label: (
-          <p
-            style={{ marginBottom: 0, padding: "4px 0" }}
-            className="flex items-center"
-          >
-            <RiAdvertisementLine size={20} className=" mr-2" />
-            Quản lý tin tài trợ
-          </p>
-        ),
-      },
-      {
-        key: "3",
-        label: (
-          <p
-            style={{ marginBottom: 0, padding: "4px 0" }}
-            className="flex items-center"
-          >
-            <MdOutlinePersonOutline size={20} className=" mr-2" />
-            Thay đổi thông tin cá nhân
-          </p>
-        ),
-      },
-      {
-        key: "4",
-        label: (
-          <p
-            style={{ marginBottom: 0, padding: "4px 0" }}
-            className="flex items-center"
-          >
-            <MdLockOutline size={20} className=" mr-2" />
-            Thay đổi mật khẩu
-          </p>
-        ),
-      },
-      {
-        key: "5",
-        label: (
-          <p
-            style={{ marginBottom: 0, padding: "4px 0" }}
-            className="flex items-center"
-          >
-            <TfiWallet size={20} className=" mr-2" />
-            Nạp tiền
-          </p>
-        ),
-      },
-      {
-        label: <Divider style={{ margin: 0, padding: 0 }} />,
-      },
-      {
-        key: "logout",
-        label: (
-          <p
-            style={{ marginBottom: 0, padding: "4px 0" }}
-            className="flex items-center"
-          >
-            <MdLogout size={20} className=" mr-2" />
-            Đăng xuất
-          </p>
-        ),
-      },
-    ]}
-    onClick={(e) => {
-      if (e.key === "logout") {
-        localStorage.clear();
-        window.location.reload();
-      }
-    }}
-  />
-);
-// onClick={() => {
-//
-// }}
+
 function Header(props) {
   const loginResult = useSelector((state) => state.login.loginResult);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
   const [open, setOpen] = useState(false);
-
+  const navigate = useNavigate();
+  const menu = (
+    <Menu
+      style={{ width: "240px", borderRadius: "8px" }}
+      items={[
+        {
+          key: "1",
+          label: (
+            <p
+              style={{ marginBottom: 0, padding: "4px 0" }}
+              className="flex items-center "
+            >
+              <MdFormatListBulleted size={20} className=" mr-2" />
+              Quản lý đăng tin
+            </p>
+          ),
+        },
+        {
+          key: "2",
+          label: (
+            <p
+              style={{ marginBottom: 0, padding: "4px 0" }}
+              className="flex items-center"
+            >
+              <RiAdvertisementLine size={20} className=" mr-2" />
+              Quản lý tin tài trợ
+            </p>
+          ),
+        },
+        {
+          key: "3",
+          label: (
+            <p
+              style={{ marginBottom: 0, padding: "4px 0" }}
+              className="flex items-center"
+            >
+              <MdOutlinePersonOutline size={20} className=" mr-2" />
+              Thay đổi thông tin cá nhân
+            </p>
+          ),
+        },
+        {
+          key: "changePass",
+          label: (
+            <p
+              style={{ marginBottom: 0, padding: "4px 0" }}
+              className="flex items-center"
+            >
+              <MdLockOutline size={20} className=" mr-2" />
+              Thay đổi mật khẩu
+            </p>
+          ),
+        },
+        {
+          key: "5",
+          label: (
+            <p
+              style={{ marginBottom: 0, padding: "4px 0" }}
+              className="flex items-center"
+            >
+              <TfiWallet size={20} className=" mr-2" />
+              Nạp tiền
+            </p>
+          ),
+        },
+        {
+          label: <Divider style={{ margin: 0, padding: 0 }} />,
+        },
+        {
+          key: "logout",
+          label: (
+            <p
+              style={{ marginBottom: 0, padding: "4px 0" }}
+              className="flex items-center"
+            >
+              <MdLogout size={20} className=" mr-2" />
+              Đăng xuất
+            </p>
+          ),
+        },
+      ]}
+      onClick={(e) => {
+        if (e.key === "logout") {
+          localStorage.clear();
+          window.location.reload();
+        } else if (e.key === "changePass") {
+          navigate("/change-password");
+        }
+      }}
+    />
+  );
   const showModal = () => {
     setIsModalOpen(true);
   };

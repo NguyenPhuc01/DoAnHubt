@@ -1,6 +1,5 @@
 import React from "react";
 import LayoutPage from "../../Container/Layout";
-import Footer from "../../Container/Footer";
 import { Col, Row } from "antd";
 import FormPost from "../../Container/FormPost";
 
@@ -12,7 +11,7 @@ export default function Post() {
           <Row>
             <Col xs={24} xl={5}></Col>
             <Col xs={24} xl={16} className="  md:p-6">
-              <div className="">  
+              <div className="">
                 <FormPost />
               </div>
             </Col>

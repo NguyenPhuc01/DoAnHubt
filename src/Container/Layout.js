@@ -38,7 +38,6 @@ export default function LayoutPage({ children }) {
             collapsible
             collapsed={collapsed}
             theme="light"
-            className=" overflow-auto"
             width={280}
             style={{
               overflow: "auto",
@@ -47,10 +46,11 @@ export default function LayoutPage({ children }) {
               left: 0,
               top: 60,
               bottom: 0,
+              zIndex: 99,
             }}
           >
             <button
-              className="flex w-full mt-3 "
+              className="flex w-full mt-3 cursor-pointer"
               style={{
                 justifyContent: collapsed ? "center" : "end",
                 padding: 10,
@@ -59,6 +59,7 @@ export default function LayoutPage({ children }) {
             >
               {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
             </button>
+
             <div className="logo flex px-4 pb-4 pt-2 items-center">
               {collapsed ? (
                 <div className="bg-[#FFECEB] h-12 w-12 rounded-full flex justify-center items-center text-2xl font-semibold uppercase text-[#74150F]">
