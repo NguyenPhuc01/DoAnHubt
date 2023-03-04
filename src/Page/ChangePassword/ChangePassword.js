@@ -1,10 +1,14 @@
 import { Button, Col, Form, Input, Row, notification } from "antd";
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function ChangePassword() {
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+  console.log(token);
   const onFinish = (values) => {
-    console.log("Success:", values);
     if (values.newPass !== values.reNewPass) {
       notification.warning({
         message: "Mật khẩu không khớp",
@@ -13,16 +17,34 @@ export default function ChangePassword() {
     } else {
       let data = JSON.stringify({
         password: values.oldPass,
-        rePassword: values.newPass,
+        newPassword: values.newPass,
+        reTypePassword: values.reNewPass,
       });
-
+      let config = {
+        headers: {
+          Authorization:
+            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJ1c2VyTmFtZVwiOlwicGh1Y1wiLFwiZmlyc3ROYW1lXCI6XCJwaHVjXCIsXCJyb2xlc1wiOlt7XCJpZFwiOlwiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhNDAwMTBcIixcInJvbGVOYW1lXCI6XCJVU0VSXCIsXCJ1c2VySWRcIjpcIjJjOTE4MGE3ODYyNGZhOGUwMTg2MjYyMGYyYTMwMDBmXCJ9XX0iLCJpYXQiOjE2Nzc5NDI0MzAsImV4cCI6MTY3Nzk1NjgzMCwianRpIjoiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhMzAwMGYifQ.UkNlUDnL4EgmGtgrn5hnWO9pdb6G33AWc-v_Iho7gNCXqZoklAloasoaEdWWIJtOrZzJBBpkc8RNq2HJ_Gma1Q",
+          "Content-Type": "application/json",
+        },
+      };
       axios
-        .put(`${process.env.REACT_APP_URL}/api/v1/users/change-password`, data)
+        .put(
+          `${process.env.REACT_APP_URL}/api/v1/users/change-password`,
+          data,
+          config
+        )
         .then((res) => {
-          console.log(res);
+          notification.success({
+            message: res.data.responseCode,
+
+            placement: "bottomRight",
+          });
         })
         .catch((err) => {
-          console.log(err);
+          notification.error({
+            message: err.message,
+            placement: "bottomRight",
+          });
         });
     }
   };

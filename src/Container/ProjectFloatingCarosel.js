@@ -9,9 +9,7 @@ function ProjectFloatingCarosel({ title }) {
   const [data, setData] = useState([]);
   useEffect(() => {
     axios
-      .get(
-        `${process.env.REACT_APP_URL}/api/v1/posts/filter?size=10&page=0&type=rent`
-      )
+      .get(`${process.env.REACT_APP_URL}/api/v1/posts/filter?page=7`)
       .then((res) => {
         setData(res.data.result);
         // console.log(res);
