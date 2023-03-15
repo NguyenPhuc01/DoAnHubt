@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { InboxOutlined } from "@ant-design/icons";
-import { Button, Divider, Form, Input, InputNumber, Radio, Select } from "antd";
+import {
+  Button,
+  Divider,
+  Form,
+  Input,
+  InputNumber,
+  Radio,
+  Select,
+  Result,
+  Modal,
+  Spin,
+} from "antd";
 import axios from "axios";
 import Dragger from "antd/lib/upload/Dragger";
 const { Option } = Select;
@@ -13,34 +24,21 @@ export default function FormPost() {
   const [getDistrict, setGetDistrict] = useState([]);
   const [getWards, setGetWards] = useState([]);
   const [typePost, setTypePost] = useState("RENT");
-
+  const [token, setToken] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [resultPost, setResultPost] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setToken(localStorage.getItem("token"));
+  }, []);
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   const onFinish = (values) => {
     console.log("Success:", values);
-
-   
-    // let postData = new FormData();
-    // postData.append("name", values.title);
-    // postData.append("village", values.Wards);
-    // postData.append("province", values.city);
-    // postData.append(
-    //   "addressDetails",
-    //   `${values.Wards}, ${values.District} ,${values.city}`
-    // );
-    // postData.append("district", values.District);
-    // postData.append("price", values.price);
-    // postData.append("area", );
-    // postData.append("bedroom", values.bedroom);
-    // postData.append("description", values.description);
-    // postData.append("facade", values.Facade);
-    // postData.append("direction", values.DirectionHouse);
-    // postData.append("juridical", values.legal);
-    // postData.append("gateway", values.way);
-    // postData.append("numberFloor", values.floors);
-    // postData.append("toilet", values.toilet);
-    // postData.append("furniture", values.interior);
-    // postData.append("image", values.image.file);
-    // postData.append("imagesDetails", values.image.fileList);
-    // postData.append("typePost", typePost);
     let data = new FormData();
     data.append("name", values.title);
     data.append("addressDetails", values.location);
@@ -60,31 +58,32 @@ export default function FormPost() {
     data.append("numberFloor", values.floors);
     data.append("toilet", values.toilet);
     data.append("furniture", values.interior);
-    data.append("typePost", 'RENT');
+    data.append("typePost", typePost);
     data.append("image", values.image.file);
-    data.append("imagesDetails", values.image.fileList[0].originFileObj
-    );
-    data.append('typeRealEstate', values.typeOfRealEstate);
+    data.append("imagesDetails", values.image.fileList[0].originFileObj);
+    data.append("typeRealEstate", values.typeOfRealEstate);
 
     let config = {
       method: "post",
       maxBodyLength: Infinity,
       url: "https://trogiare-production.up.railway.app/api/v1/posts",
       headers: {
-        Authorization:
-          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJ1c2VyTmFtZVwiOlwicGh1Y1wiLFwiZmlyc3ROYW1lXCI6XCJwaHVjXCIsXCJyb2xlc1wiOlt7XCJpZFwiOlwiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhNDAwMTBcIixcInJvbGVOYW1lXCI6XCJVU0VSXCIsXCJ1c2VySWRcIjpcIjJjOTE4MGE3ODYyNGZhOGUwMTg2MjYyMGYyYTMwMDBmXCJ9XX0iLCJpYXQiOjE2Nzg4NTE3NDIsImV4cCI6MTY3ODg2NjE0MiwianRpIjoiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhMzAwMGYifQ.ap1xHjJfx6Zx1Qe2z5kKGXaY6ApPkCLCS1J-kAYSKLBxCPEeC5wI2PABDpl3UTsAR7HGxFxjqvFh9jLzx5obcQ",
+        Authorization: `Bearer ${token}`,
       },
       data: data,
     };
     axios(config)
       .then(function (response) {
-        console.log("🚀 ~ file: FormPost.js:78 ~ response:", response);
-        console.log(JSON.stringify(response.data));
+        setResultPost(true);
+        setIsModalOpen(true);
+     
       })
       .catch(function (error) {
-        console.log(error);
+        setIsModalOpen(true);
+     
       });
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -216,28 +215,15 @@ export default function FormPost() {
             onChange={onGenderChange}
             allowClear
           >
-            <Option value="HOUSE">
-              Nhà
-            </Option>
+            <Option value="HOUSE">Nhà</Option>
             <Option value="VILLA">Biệt thự</Option>
-            <Option value="CAPARTMENT">
-              Căn hộ
-            </Option>
+            <Option value="CAPARTMENT">Căn hộ</Option>
             <Option value="MOTEL_ROOM">Nhà trọ</Option>
-            <Option value="OFFICE">
-               Văn phòng
-            </Option>
-            <Option value="STREET_HOUSE">
-              Nhà mặt phố
-            </Option>
+            <Option value="OFFICE">Văn phòng</Option>
+            <Option value="STREET_HOUSE">Nhà mặt phố</Option>
             <Option value="COMMERCIAL_TOWNHOUSES">Nhà phố thương mại</Option>
-            <Option value="GROUND">
-              Mặt bằng
-            </Option>
-            <Option value="Other">
-              Khác
-            </Option>
-            
+            <Option value="GROUND">Mặt bằng</Option>
+            <Option value="Other">Khác</Option>
           </Select>
         </Form.Item>
         <Form.Item label="Chọn nhanh địa chỉ" name="location">
@@ -582,13 +568,14 @@ export default function FormPost() {
 
         <Form.Item>
           <div className="flex justify-between ">
-            <Button style={{ borderRadius: 8 }} size="large">
+            <Button style={{ borderRadius: 8 }} size="large"  >
               Xem trước
             </Button>
             <Button
               type="primary"
               htmlType="submit"
               size="large"
+              
               style={{ borderRadius: 8 }}
             >
               Submit
@@ -596,6 +583,15 @@ export default function FormPost() {
           </div>
         </Form.Item>
       </Form>
+
+      <Modal open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+        <Result
+          status={resultPost === true ? "success" : "error"}
+          title={
+            resultPost === true ? "Đăng bài thành công" : "Đăng bài thất bại"
+          }
+        ></Result>
+      </Modal>
     </div>
   );
 }
