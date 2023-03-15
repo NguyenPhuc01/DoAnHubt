@@ -16,38 +16,73 @@ export default function FormPost() {
 
   const onFinish = (values) => {
     console.log("Success:", values);
-    let postData = new FormData();
-    postData.append("name", values.title);
-    postData.append("village", values.Wards);
-    postData.append("province", values.city);
-    postData.append(
-      "addressDetails",
-      `${values.Wards}, ${values.District} ,${values.city}`
-    );
-    postData.append("district", values.District);
-    postData.append("priceUnit", "Tháng");
-    postData.append("price", values.price);
-    postData.append("area", "100");
-    postData.append("bedroom", values.bedroom);
-    postData.append("description", values.description);
-    postData.append("facade", values.Facade);
-    postData.append("direction", values.DirectionHouse);
-    postData.append("juridical", values.legal);
-    postData.append("gateway", values.way);
-    postData.append("numberFloor", values.floors);
-    postData.append("toilet", values.toilet);
-    postData.append("furniture", values.interior);
-    postData.append("image", values.image.file);
-    postData.append("imagesDetails", values.image.fileList);
-    postData.append("typePost", typePost);
 
-    axios
-      .post(`${process.env.REACT_APP_URL}/api/v1/posts`)
-      .then((res) => {
-        console.log(res);
+   
+    // let postData = new FormData();
+    // postData.append("name", values.title);
+    // postData.append("village", values.Wards);
+    // postData.append("province", values.city);
+    // postData.append(
+    //   "addressDetails",
+    //   `${values.Wards}, ${values.District} ,${values.city}`
+    // );
+    // postData.append("district", values.District);
+    // postData.append("price", values.price);
+    // postData.append("area", );
+    // postData.append("bedroom", values.bedroom);
+    // postData.append("description", values.description);
+    // postData.append("facade", values.Facade);
+    // postData.append("direction", values.DirectionHouse);
+    // postData.append("juridical", values.legal);
+    // postData.append("gateway", values.way);
+    // postData.append("numberFloor", values.floors);
+    // postData.append("toilet", values.toilet);
+    // postData.append("furniture", values.interior);
+    // postData.append("image", values.image.file);
+    // postData.append("imagesDetails", values.image.fileList);
+    // postData.append("typePost", typePost);
+    let data = new FormData();
+    data.append("name", values.title);
+    data.append("addressDetails", values.location);
+    data.append("province", values.city);
+    data.append("district", values.District);
+    data.append("village", values.Wards);
+    data.append("useableArea", values.acreage);
+    data.append("landArea", "20");
+    data.append("price", values.price);
+    data.append("area", "2");
+    data.append("bedroom", values.bedroom);
+    data.append("description", values.description);
+    data.append("facade", values.Facade);
+    data.append("direction", values.DirectionHouse);
+    data.append("juridical", values.legal);
+    data.append("gateway", values.way);
+    data.append("numberFloor", values.floors);
+    data.append("toilet", values.toilet);
+    data.append("furniture", values.interior);
+    data.append("typePost", 'RENT');
+    data.append("image", values.image.file);
+    data.append("imagesDetails", values.image.fileList[0].originFileObj
+    );
+    data.append('typeRealEstate', values.typeOfRealEstate);
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "https://trogiare-production.up.railway.app/api/v1/posts",
+      headers: {
+        Authorization:
+          "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJ1c2VyTmFtZVwiOlwicGh1Y1wiLFwiZmlyc3ROYW1lXCI6XCJwaHVjXCIsXCJyb2xlc1wiOlt7XCJpZFwiOlwiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhNDAwMTBcIixcInJvbGVOYW1lXCI6XCJVU0VSXCIsXCJ1c2VySWRcIjpcIjJjOTE4MGE3ODYyNGZhOGUwMTg2MjYyMGYyYTMwMDBmXCJ9XX0iLCJpYXQiOjE2Nzg4NTE3NDIsImV4cCI6MTY3ODg2NjE0MiwianRpIjoiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhMzAwMGYifQ.ap1xHjJfx6Zx1Qe2z5kKGXaY6ApPkCLCS1J-kAYSKLBxCPEeC5wI2PABDpl3UTsAR7HGxFxjqvFh9jLzx5obcQ",
+      },
+      data: data,
+    };
+    axios(config)
+      .then(function (response) {
+        console.log("🚀 ~ file: FormPost.js:78 ~ response:", response);
+        console.log(JSON.stringify(response.data));
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(function (error) {
+        console.log(error);
       });
   };
   const onFinishFailed = (errorInfo) => {
@@ -181,30 +216,28 @@ export default function FormPost() {
             onChange={onGenderChange}
             allowClear
           >
-            <Option value="Cho thuê căn hộ chung cư">
-              Cho thuê căn hộ chung cư
+            <Option value="HOUSE">
+              Nhà
             </Option>
-            <Option value="Cho thuê nhà riêng">Cho thuê nhà riêng</Option>
-            <Option value="Cho thuê nhà biệt thự, liền kề">
-              Cho thuê nhà biệt thự, liền kề
+            <Option value="VILLA">Biệt thự</Option>
+            <Option value="CAPARTMENT">
+              Căn hộ
             </Option>
-            <Option value="Cho thuê nhà mặt phố">Cho thuê nhà mặt phố</Option>
-            <Option value="Cho thuê shophouse, nhà phố thương mại">
-              Cho thuê shophouse, nhà phố thương mại
+            <Option value="MOTEL_ROOM">Nhà trọ</Option>
+            <Option value="OFFICE">
+               Văn phòng
             </Option>
-            <Option value="Cho thuê nhà trọ, phòng trọ">
-              Cho thuê nhà trọ, phòng trọ
+            <Option value="STREET_HOUSE">
+              Nhà mặt phố
             </Option>
-            <Option value="Cho thuê văn phòng">Cho thuê văn phòng</Option>
-            <Option value="Cho thuê, sang nhượng cửa hàng, ki ốt">
-              Cho thuê, sang nhượng cửa hàng, ki ốt
+            <Option value="COMMERCIAL_TOWNHOUSES">Nhà phố thương mại</Option>
+            <Option value="GROUND">
+              Mặt bằng
             </Option>
-            <Option value="Cho thuê kho, nhà xưởng, đất">
-              Cho thuê kho, nhà xưởng, đất
+            <Option value="Other">
+              Khác
             </Option>
-            <Option value="Cho thuê loại bất động sản khác">
-              Cho thuê loại bất động sản khác
-            </Option>
+            
           </Select>
         </Form.Item>
         <Form.Item label="Chọn nhanh địa chỉ" name="location">
@@ -485,14 +518,14 @@ export default function FormPost() {
           </div>
           <Form.Item label="Hướng nhà" name="DirectionHouse">
             <Select placeholder="Chọn" allowClear>
-              <Option value="Đông">Đông</Option>
-              <Option value="Tây">Tây</Option>
-              <Option value="Nam">Nam</Option>
-              <Option value="Bắc">Bắc</Option>
-              <Option value="Đông Bắc">Đông Bắc</Option>
-              <Option value="Tấy Bắc">Tấy Bắc</Option>
-              <Option value="Đông Nam">Đông Nam</Option>
-              <Option value="Tây Nam">Tây Nam</Option>
+              <Option value="EAST">Đông</Option>
+              <Option value="WEST">Tây</Option>
+              <Option value="SOUTH">Nam</Option>
+              <Option value="NORTH">Bắc</Option>
+              <Option value="NORTHEAST">Đông Bắc</Option>
+              <Option value="NORTHWEST">Tấy Bắc</Option>
+              <Option value="SOUTHEAST">Đông Nam</Option>
+              <Option value="SOUTHWEST">Tây Nam</Option>
             </Select>
           </Form.Item>
 
