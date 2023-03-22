@@ -7,7 +7,6 @@ export default function ChangePassword() {
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   }, []);
-  console.log(token);
   const onFinish = (values) => {
     if (values.newPass !== values.reNewPass) {
       notification.warning({
@@ -22,8 +21,7 @@ export default function ChangePassword() {
       });
       let config = {
         headers: {
-          Authorization:
-            "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ7XCJ1c2VyTmFtZVwiOlwicGh1Y1wiLFwiZmlyc3ROYW1lXCI6XCJwaHVjXCIsXCJyb2xlc1wiOlt7XCJpZFwiOlwiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhNDAwMTBcIixcInJvbGVOYW1lXCI6XCJVU0VSXCIsXCJ1c2VySWRcIjpcIjJjOTE4MGE3ODYyNGZhOGUwMTg2MjYyMGYyYTMwMDBmXCJ9XX0iLCJpYXQiOjE2Nzc5NDI0MzAsImV4cCI6MTY3Nzk1NjgzMCwianRpIjoiMmM5MTgwYTc4NjI0ZmE4ZTAxODYyNjIwZjJhMzAwMGYifQ.UkNlUDnL4EgmGtgrn5hnWO9pdb6G33AWc-v_Iho7gNCXqZoklAloasoaEdWWIJtOrZzJBBpkc8RNq2HJ_Gma1Q",
+          Authorization: ` Bearer ${token}`,
           "Content-Type": "application/json",
         },
       };

@@ -13,7 +13,7 @@ import {
 } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ModalLogin from "./ModalLogin";
 import ModalRegister from "./ModalRegister";
 import logo from "../ultil/Images/logo.jpg";
@@ -27,10 +27,11 @@ import {
 } from "react-icons/md";
 import { RiAdvertisementLine } from "react-icons/ri";
 import { TfiWallet } from "react-icons/tfi";
-const handleButtonClick = (e) => {
-  message.info("Click on left button.");
-  console.log("click left button", e);
-};
+import { ChatAction } from "../Store/Actions/ChatAction";
+// const handleButtonClick = (e) => {
+//   message.info("Click on left button.");
+//   console.log("click left button", e);
+// };
 const handleMenuClick = (e) => {
   message.info("Click on menu item.");
   console.log("click", e);
@@ -42,24 +43,23 @@ function Header(props) {
   const [isModalRegisterOpen, setIsModalRegisterOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-
+  const chat = useSelector((state) => state.chat.showChat);
   const items = [
     {
-      label: (
-        <div className="w-80 flex items-center mt-4">
-          <Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaalm2F60-vtEYeWNhHolAHwCm2TKrhAyDcphc8vZJEg&s" />
-          <div className="ml-3">
-            <h4 >nguyen van phuc</h4>
-          </div>
-        </div>
-      ),
-      key: "1",
+      label:
+        chat &&
+        chat?.map((e, i) => {
+          console.log(e.avatarImage);
+          return (
+            <div className="w-80 flex items-center mt-4" key={i}>
+              <Avatar src={e.avatarImage} />
+              <div className="ml-3">
+                <h4>{e.fullName}</h4>
+              </div>
+            </div>
+          );
+        }),
     },
-    {
-      label: "2nd menu item",
-      key: "2",
-    },
-   
   ];
   const menuProps = {
     items,
@@ -173,10 +173,11 @@ function Header(props) {
   const onClose = () => {
     setOpen(false);
   };
+  const dispatch = useDispatch();
+  const handleChat = () => {
+    dispatch(ChatAction());
+  };
 
-  useEffect(()=>{
-
-  },[])
   return (
     <div className="h-16 px-4 flex items-center shadow-md fixed top-0 z-50 bg-white w-full">
       <Row className="w-full flex items-center h-12">
@@ -248,7 +249,10 @@ function Header(props) {
                 </Button>
               </Link>
               <Dropdown menu={menuProps} trigger={["click"]} className="ml-3 ">
-                <Button style={{ fontWeight: "600", borderRadius: "8px" }}>
+                <Button
+                  style={{ fontWeight: "600", borderRadius: "8px" }}
+                  onClick={handleChat}
+                >
                   <Space>
                     Chat
                     <DownOutlined />
