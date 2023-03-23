@@ -10,7 +10,6 @@ import {
   Select,
   Result,
   Modal,
-  Spin,
 } from "antd";
 import axios from "axios";
 import Dragger from "antd/lib/upload/Dragger";
@@ -27,7 +26,6 @@ export default function FormPost() {
   const [token, setToken] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [resultPost, setResultPost] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   }, []);
@@ -76,11 +74,9 @@ export default function FormPost() {
       .then(function (response) {
         setResultPost(true);
         setIsModalOpen(true);
-     
       })
       .catch(function (error) {
         setIsModalOpen(true);
-     
       });
   };
 
@@ -568,14 +564,13 @@ export default function FormPost() {
 
         <Form.Item>
           <div className="flex justify-between ">
-            <Button style={{ borderRadius: 8 }} size="large"  >
+            <Button style={{ borderRadius: 8 }} size="large">
               Xem trước
             </Button>
             <Button
               type="primary"
               htmlType="submit"
               size="large"
-              
               style={{ borderRadius: 8 }}
             >
               Submit

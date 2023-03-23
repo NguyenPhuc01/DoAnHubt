@@ -5,10 +5,10 @@ import {
   UserOutlined,
   VideoCameraOutlined,
 } from "@ant-design/icons";
-import { Collapse, Layout, Menu } from "antd";
+import { Layout, Menu } from "antd";
 import React, { useState } from "react";
 import Footer from "./Footer";
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 export default function LayoutPage({ children }) {
   const [collapsed, setCollapsed] = useState(false);
 

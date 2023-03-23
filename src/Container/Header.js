@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Col,
@@ -10,6 +10,7 @@ import {
   Divider,
   message,
   Avatar,
+  List,
 } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,15 +29,19 @@ import {
 import { RiAdvertisementLine } from "react-icons/ri";
 import { TfiWallet } from "react-icons/tfi";
 import { ChatAction } from "../Store/Actions/ChatAction";
-// const handleButtonClick = (e) => {
-//   message.info("Click on left button.");
-//   console.log("click left button", e);
-// };
+import user from "../ultil/Images/user.jpg";
+import InfiniteScroll from "react-infinite-scroll-component";
 const handleMenuClick = (e) => {
   message.info("Click on menu item.");
   console.log("click", e);
 };
-
+function Uppercase(string) {
+  if (string) {
+    return string.toLowerCase().replace(/(^|\s)\S/g, function (l) {
+      return l.toUpperCase();
+    });
+  }
+}
 function Header(props) {
   const loginResult = useSelector((state) => state.login.loginResult);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,19 +51,43 @@ function Header(props) {
   const chat = useSelector((state) => state.chat.showChat);
   const items = [
     {
-      label:
-        chat &&
-        chat?.map((e, i) => {
-          console.log(e.avatarImage);
-          return (
-            <div className="w-80 flex items-center mt-4" key={i}>
-              <Avatar src={e.avatarImage} />
-              <div className="ml-3">
-                <h4>{e.fullName}</h4>
-              </div>
-            </div>
-          );
-        }),
+      label: (
+        <div
+          id="scrollableDiv"
+          style={{
+            position: "fixed",
+            right: 50,
+            width: 400,
+            padding: "0 16px",
+            background: "#fff",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+          }}
+        >
+          <InfiniteScroll
+            dataLength={chat?.length}
+            hasMore={chat?.length < 50}
+            endMessage={<Divider plain>It is all, nothing more 🤐</Divider>}
+            scrollableTarget="scrollableDiv"
+          >
+            <List
+              dataSource={chat}
+              renderItem={(item) => (
+                <List.Item key={item}>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatarImage || user} size={64} />}
+                    title={
+                      <a href="https://ant.design">
+                        {Uppercase(item.fullName)}
+                      </a>
+                    }
+                    description={item.messageList[0].content}
+                  />
+                </List.Item>
+              )}
+            />
+          </InfiniteScroll>
+        </div>
+      ),
     },
   ];
   const menuProps = {
@@ -161,11 +190,6 @@ function Header(props) {
   const showModalRegister = () => {
     setIsModalRegisterOpen(true);
   };
-  function Uppercase(string) {
-    if (string) {
-      return string?.charAt(0).toUpperCase() + string?.slice(1);
-    }
-  }
 
   const showDrawer = () => {
     setOpen(true);
@@ -253,10 +277,7 @@ function Header(props) {
                   style={{ fontWeight: "600", borderRadius: "8px" }}
                   onClick={handleChat}
                 >
-                  <Space>
-                    Chat
-                    <DownOutlined />
-                  </Space>
+                  <Space>Chat</Space>
                 </Button>
               </Dropdown>
             </div>
